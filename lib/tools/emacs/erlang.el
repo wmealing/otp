@@ -3807,7 +3807,6 @@ at the end."
 
 (defun erlang-get-module ()
   "Return the name of the module as specified by `-module'.
-
 Return nil if file contains no `-module' attribute."
   (save-excursion
     (save-restriction
@@ -3815,16 +3814,16 @@ Return nil if file contains no `-module' attribute."
       (goto-char (point-min))
       (let ((md (match-data)))
         (unwind-protect
-            (if (re-search-forward
-                 (eval-when-compile
-                   (concat "^-module\\s *(\\s *\\(\\("
-                           erlang-atom-regexp
-                           "\\)?\\)\\s *)\\s *\\."))
-                 (point-max) t)
-                (erlang-remove-quotes
-                 (buffer-substring-no-properties (match-beginning 1)
-                                          (match-end 1)))
-              nil)
+          (if (re-search-forward
+                (eval-when-compile
+                  (concat "^-module\\s *[(]?\\s *\\("
+                    erlang-atom-regexp
+                    "\\)\\s *[)]?\\s *\\."))
+                nil t)
+            (erlang-remove-quotes
+              (buffer-substring-no-properties (match-beginning 1)
+                (match-end 1)))
+            nil)
           (store-match-data md))))))
 
 
